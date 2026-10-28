@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: page(~{::section}, 'Coșul Meu')}">
+<body>
+<section>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fa-solid fa-cart-shopping text-warning me-2"></i>Coșul Meu</h2>
+        <a th:href="@{/products}" class="btn btn-outline-gold">Continuă cumpărăturile</a>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-8">
+            <div class="glass-card p-4">
+                <table class="table table-dark table-hover">
+                    <thead>
+                        <tr class="text-warning">
+                            <th>Produs</th>
+                            <th>Preț Unitar</th>
+                            <th>Cantitate</th>
+                            <th>Total</th>
+                            <th>Acțiuni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${cartItems}">
+                            <td th:text="${item.product.name}">Nume Produs</td>
+                            <td th:text="${item.product.price} + ' RON'">0 RON</td>
+                            <td th:text="${item.quantity}">1</td>
+                            <td class="text-warning fw-bold" th:text="${item.product.price * item.quantity} + ' RON'">0 RON</td>
+                            <td>
+                                <form th:action="@{/cart/remove/{id}(id=${item.id})}" method="post" class="m-0">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">Șterge</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="glass-card p-4">
+                <h4 class="mb-4">Sumar Comandă</h4>
+
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="text-muted">Transport:</span>
+                    <span class="text-success">Gratuit</span>
+                </div>
+
+                <div class="d-flex justify-content-between mb-4">
+                    <strong>Total:</strong>
+                    <strong class="text-warning" th:text="${totalPrice} + ' RON'">0 RON</strong>
+                </div>
+
+                <form th:action="@{/cart/checkout}" method="post">
+                    <button type="submit" class="btn btn-gold w-100">Finalizează Comanda</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</section>
+</body>
+</html>

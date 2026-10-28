@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout :: page(~{::section}, 'Catalog Instrumente')}">
+<body>
+<section>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="fa-solid fa-boxes-stacked text-warning me-2"></i>Catalog Instrumente</h1>
+
+        <a sec:authorize="hasAnyRole('EDITOR', 'ADMIN')" th:href="@{/products/add}" class="btn btn-gold">
+            + Adaugă Produs Nou
+        </a>
+    </div>
+
+    <form th:action="@{/products}" method="get" class="d-flex gap-2 mb-4">
+        <input type="text" name="search" class="form-control" placeholder="Caută după denumire sau brand...">
+        <button type="submit" class="btn btn-outline-gold">Caută</button>
+    </form>
+
+    <div class="row g-4">
+        <div class="col-4" th:each="p : ${products}">
+            <div class="glass-card">
+                <div class="product-img-wrapper">
+                    <img th:src="${p.imageUrl}" class="product-img">
+                    <span class="product-badge" th:text="${p.category.name}">Categorie</span>
+                </div>
+
+                <div class="p-4">
+                    <p class="text-warning mb-1" th:text="${p.brand}">Brand</p>
+                    <h4 th:text="${p.name}">Nume instrument</h4>
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="price-tag" th:text="${p.price} + ' RON'">0 RON</span>
+                        <span class="badge bg-success" th:text="'Stoc: ' + ${p.stockQuantity}">Stoc</span>
+                    </div>
+
+                    <div class="d-flex gap-2 mb-2">
+                        <a th:href="@{/products/detail/{id}(id=${p.id})}" class="btn btn-outline-light btn-sm w-50">Detalii</a>
+
+                        <form th:action="@{/cart/add/{id}(id=${p.id})}" method="post" class="m-0 w-50">
+                            <button type="submit" class="btn btn-gold btn-sm w-100" th:disabled="${p.stockQuantity == 0}">Cumpără</button>
+                        </form>
+                    </div>
+
+                    <div class="d-flex gap-2" sec:authorize="hasAnyRole('EDITOR', 'ADMIN')">
+                        <a th:href="@{/products/edit/{id}(id=${p.id})}" class="btn btn-outline-gold btn-sm w-50">Edit</a>
+
+                        <form th:action="@{/products/delete/{id}(id=${p.id})}" method="post" class="m-0 w-50">
+                            <button type="submit" class="btn btn-outline-danger btn-sm w-100">Șterge</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+</body>
+</html>

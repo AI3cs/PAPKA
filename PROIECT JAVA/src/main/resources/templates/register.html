@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sonora Guitars - Înregistrare</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link th:href="@{/css/custom.css}" rel="stylesheet">
+</head>
+<body class="d-flex align-items-center justify-content-center min-vh-100">
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-5">
+
+                <div th:if="${registrationError}" class="alert alert-danger mb-4" th:text="${registrationError}"></div>
+
+                <div class="glass-card p-5">
+                    <div class="text-center mb-4">
+                        <i class="fa-solid fa-user-plus fa-3x text-warning mb-3"></i>
+                        <h2>CREARE CONT</h2>
+                        <p class="text-muted">Creați un cont nou în magazinul Sonora</p>
+                    </div>
+
+                    <form th:action="@{/register}" method="post">
+                        <div class="mb-3">
+                            <label class="form-label">Nume de utilizator</label>
+                            <input type="text" name="username" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Adresă de email</label>
+                            <input type="email" name="email" class="form-control" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Parolă</label>
+                            <input type="password" name="password" class="form-control" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-gold w-100">ÎNREGISTREAZĂ-TE</button>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <p class="text-muted mb-0">Aveți deja cont?
+                            <a th:href="@{/login}">Conectați-vă aici</a>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

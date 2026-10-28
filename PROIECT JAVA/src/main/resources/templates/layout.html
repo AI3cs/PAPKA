@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:fragment="page(content, title)">
+<head>
+    <meta charset="UTF-8">
+    <title>Sonora Guitars - [[${title}]]</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link th:href="@{/css/custom.css}" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand navbar-dark navbar-sonora sticky-top">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" th:href="@{/}">
+                <i class="fa-solid fa-guitar me-2 text-warning"></i><span>Sonora</span> Guitars
+            </a>
+
+            <ul class="navbar-nav me-auto" sec:authorize="isAuthenticated()">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}"><i class="fa-solid fa-gauge me-1"></i> Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/products}"><i class="fa-solid fa-boxes-stacked me-1"></i> Produse</a>
+                </li>
+            </ul>
+
+            <div class="d-flex align-items-center gap-3 ms-auto" sec:authorize="isAuthenticated()">
+                <a th:href="@{/cart}" class="btn btn-gold btn-sm">
+                    <i class="fa-solid fa-cart-shopping me-1"></i> Coșul Meu
+                    <span th:if="${cartItemsCount > 0}" class="badge bg-danger ms-1" th:text="${cartItemsCount}">0</span>
+                </a>
+
+                <span class="text-white fw-bold">
+                    <i class="fa-solid fa-user text-warning me-1"></i>
+                    <span sec:authentication="name">Username</span>
+                </span>
+
+                <form th:action="@{/logout}" method="post" class="m-0">
+                    <button type="submit" class="btn btn-outline-gold btn-sm">
+                        <i class="fa-solid fa-right-from-bracket me-1"></i> Deconectare
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container-fluid px-4 my-5 flex-grow-1">
+        <div th:replace="${content}"></div>
+    </main>
+
+    <footer>
+        <div class="container-fluid px-4 text-center">
+            <p class="mb-0 fw-bold"><i class="fa-solid fa-guitar text-warning me-2"></i>Sonora Guitars S.R.L. &copy; 2026. Toate drepturile rezervate.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
